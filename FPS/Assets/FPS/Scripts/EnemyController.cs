@@ -113,13 +113,16 @@ public class EnemyController : MonoBehaviour
 		m_ActorsManager = FindObjectOfType<ActorsManager> ();
 		DebugUtility.HandleErrorIfNullFindObject<ActorsManager, EnemyController> (m_ActorsManager, this);
 
-		m_EnemyManager.RegisterEnemy (this);
-
 		m_Health = GetComponent<Health> ();
 		DebugUtility.HandleErrorIfNullGetComponent<Health, EnemyController> (m_Health, this, gameObject);
 
 		m_Actor = GetComponent<Actor> ();
 		DebugUtility.HandleErrorIfNullGetComponent<Actor, EnemyController> (m_Actor, this, gameObject);
+
+		if (m_Actor.affiliation == 0)
+		{
+			m_EnemyManager.RegisterEnemy (this);
+		}
 
 		m_NavMeshAgent = GetComponent<NavMeshAgent> ();
 		m_SelfColliders = GetComponentsInChildren<Collider> ();
@@ -342,7 +345,10 @@ public class EnemyController : MonoBehaviour
 		Destroy (vfx, 5f);
 
 		// tells the game flow manager to handle the enemy destuction
-		m_EnemyManager.UnregisterEnemy (this);
+		if (m_Actor.affiliation == 0)
+		{
+			m_EnemyManager.UnregisterEnemy (this);
+		}
 
 		// loot an object
 		if (TryDropItem ())

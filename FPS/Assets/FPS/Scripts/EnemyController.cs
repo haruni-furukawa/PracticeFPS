@@ -97,7 +97,7 @@ public class EnemyController : MonoBehaviour
 	EnemyManager m_EnemyManager;
 	ActorsManager m_ActorsManager;
 	Health m_Health;
-	Actor m_Actor;
+	public Actor m_Actor;
 	Collider[] m_SelfColliders;
 	GameFlowManager m_GameFlowManager;
 	bool m_WasDamagedThisFrame;

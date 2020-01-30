@@ -105,15 +105,25 @@ public class EnemyMobile : MonoBehaviour
 				m_EnemyController.OrientTowards (m_EnemyController.knownDetectedTarget.transform.position);
 				break;
 			case AIState.Attack:
-				if (Vector3.Distance (m_EnemyController.knownDetectedTarget.transform.position, m_EnemyController.m_DetectionModule.detectionSourcePoint.position) >=
-					(attackStopDistanceRatio * m_EnemyController.m_DetectionModule.attackRange))
+
+				if (m_EnemyController.m_Actor.affiliation == 0)
 				{
-					m_EnemyController.SetNavDestination (m_EnemyController.knownDetectedTarget.transform.position);
+					m_EnemyController.UpdatePathDestination ();
+					m_EnemyController.SetNavDestination (m_EnemyController.GetDestinationOnPath ());
 				}
 				else
 				{
-					m_EnemyController.SetNavDestination (transform.position);
+					if (Vector3.Distance (m_EnemyController.knownDetectedTarget.transform.position, m_EnemyController.m_DetectionModule.detectionSourcePoint.position) >=
+						(attackStopDistanceRatio * m_EnemyController.m_DetectionModule.attackRange))
+					{
+						m_EnemyController.SetNavDestination (m_EnemyController.knownDetectedTarget.transform.position);
+					}
+					else
+					{
+						m_EnemyController.SetNavDestination (transform.position);
+					}
 				}
+
 				m_EnemyController.OrientTowards (m_EnemyController.knownDetectedTarget.transform.position);
 				m_EnemyController.TryAtack ((m_EnemyController.knownDetectedTarget.transform.position - m_EnemyController.GetCurrentWeapon ().weaponRoot.transform.position).normalized);
 				break;

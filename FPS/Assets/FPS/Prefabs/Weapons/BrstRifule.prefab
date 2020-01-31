@@ -193,7 +193,7 @@ MonoBehaviour:
   aimZoomRatio: 0.25
   aimOffset: {x: 0, y: 0.13, z: 0}
   ammoReloadRate: 99999
-  ammoReloadDelay: 0.7
+  ammoReloadDelay: 0.01
   maxAmmo: 3
   maxChargeDuration: 2
   ammoUsedOnStartCharge: 1

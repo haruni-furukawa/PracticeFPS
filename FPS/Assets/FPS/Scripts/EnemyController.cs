@@ -104,7 +104,9 @@ public class EnemyController : MonoBehaviour
 	WeaponController m_CurrentWeapon;
 	WeaponController[] m_Weapons;
 	NavigationModule m_NavigationModule;
+	Rigidbody rb;
 
+	private bool addForceFlag = false;
 	void Start ()
 	{
 		m_EnemyManager = FindObjectOfType<EnemyManager> ();
@@ -181,6 +183,8 @@ public class EnemyController : MonoBehaviour
 			m_EyeColorMaterialPropertyBlock.SetColor ("_EmissionColor", defaultEyeColor);
 			m_EyeRendererData.renderer.SetPropertyBlock (m_EyeColorMaterialPropertyBlock, m_EyeRendererData.materialIndex);
 		}
+
+		rb = GetComponent<Rigidbody>();
 	}
 
 	void Update ()
@@ -289,7 +293,7 @@ public class EnemyController : MonoBehaviour
 
 	public void SetNavDestination (Vector3 destination)
 	{
-		if (m_NavMeshAgent)
+		if (m_NavMeshAgent && m_NavMeshAgent.enabled)
 		{
 			m_NavMeshAgent.SetDestination (destination);
 		}
@@ -434,5 +438,23 @@ public class EnemyController : MonoBehaviour
 		DebugUtility.HandleErrorIfNullGetComponent<WeaponController, EnemyController> (m_CurrentWeapon, this, gameObject);
 
 		return m_CurrentWeapon;
+	}
+
+	public void AvoidBullet(){
+		if(rb && addForceFlag == false){
+			float power = 5f;
+			addForceFlag = true;
+			m_NavMeshAgent.enabled = false;
+			rb.isKinematic = false;
+			int randomValue = Random.Range(0,2)*2-1;
+			rb.AddForce(transform.right * power * randomValue, ForceMode.Impulse);
+			Invoke("RecoveryBody",0.5f);
+		}
+	}
+
+	private void RecoveryBody(){
+		addForceFlag = false;
+		m_NavMeshAgent.enabled = true;
+        rb.isKinematic = true;
 	}
 }

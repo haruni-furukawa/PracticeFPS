@@ -442,7 +442,7 @@ public class EnemyController : MonoBehaviour
 
 	public void AvoidBullet(){
 		if(rb && addForceFlag == false){
-			float power = 5f;
+			float power = 3f;
 			addForceFlag = true;
 			m_NavMeshAgent.enabled = false;
 			rb.isKinematic = false;
